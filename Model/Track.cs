@@ -14,6 +14,18 @@ namespace Model
         public Track(string name, SectionTypes[] sections) 
         {
             Name = name;
+            Sections = ConvertSectionArraytoLinkedList(sections);
+        }
+
+        //Convert the array with sectiontypes to a linkedlist with sections
+        private LinkedList<Section> ConvertSectionArraytoLinkedList(SectionTypes[] sectionTypes)
+        {
+            LinkedList<Section> sectionList = new LinkedList<Section>();
+            foreach (SectionTypes sectionType in sectionTypes)
+            {
+                sectionList.AddLast(new Section(sectionType));
+            }
+            return sectionList;
         }
     }
 }
