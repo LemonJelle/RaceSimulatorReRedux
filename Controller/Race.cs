@@ -18,12 +18,13 @@ namespace Controller
 
         public Race(Track track, List<IParticipant> participants)
         {
-            //First check if amount of participants doesn't exceed the limit
-            CheckAmountOfParticipants();
-
+            
             Track = track;
             Participants = participants;
             _random = new Random(DateTime.Now.Millisecond);
+
+            //First check if amount of participants doesn't exceed the limit
+            CheckAmountOfParticipants();
         }
 
         public SectionData GetSectionData(Section section)
