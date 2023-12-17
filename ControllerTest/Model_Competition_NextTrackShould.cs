@@ -24,5 +24,24 @@ namespace ControllerTest
             Track result = _competition.NextTrack();
             Assert.IsNull(result);
         }
+
+        [Test]
+        public void NextTrack_OneInQueue_ReturnTrack()
+        {
+            Track track = new Track("Test Track", new[]
+            {
+                SectionTypes.StartGrid,
+                SectionTypes.Finish,
+                SectionTypes.LeftCorner,
+                SectionTypes.LeftCorner,
+                SectionTypes.Straight,
+                SectionTypes.Straight,
+                SectionTypes.LeftCorner,
+                SectionTypes.LeftCorner,
+            });
+            _competition.Tracks.Enqueue(track);
+            Track result = _competition.NextTrack();
+            Assert.That(result, Is.EqualTo(track));
+        }
     }
 }
