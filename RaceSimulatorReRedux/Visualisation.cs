@@ -215,17 +215,19 @@ namespace RaceSimulatorReRedux
                 Array.Reverse(sectionLinesToDraw);
             }
 
+            //Draw lines, check if it has to be reversed, if so, write the reversed string
             foreach (string line in sectionLinesToDraw)
             {
+                //Get participants data
                 string lineWithParticipants = ShowParticipants(line, Data.CurrentRace.GetSectionData(_currentSection).Left, Data.CurrentRace.GetSectionData(_currentSection).Right);
 
                 Console.SetCursorPosition(tempX, tempY);
                 if(reverse)
                 {
-                    Console.Write(ReverseString(line));
+                    Console.Write(ReverseString(lineWithParticipants));
                 } else
                 {
-                    Console.WriteLine(line);
+                    Console.WriteLine(lineWithParticipants);
                 }
                 tempY++;
             }
@@ -329,8 +331,8 @@ namespace RaceSimulatorReRedux
         public static string ShowParticipants(string input, IParticipant left, IParticipant right)
         {
             //Take first letters from the participant's names
-            string? leftParticipantIcon = left?.Name.Substring(0, 1);
-            string? rightParticipantIcon = right?.Name.Substring(0, 1);
+            string leftParticipantIcon = left?.Name.Substring(0, 1);
+            string rightParticipantIcon = right?.Name.Substring(0, 1);
 
             //Check for both participants if they are null, if not, replace an eventual 1 or 2 with the participant's first names
             string output = input.Replace("1", leftParticipantIcon ?? " ").Replace("2", rightParticipantIcon ?? " ");
