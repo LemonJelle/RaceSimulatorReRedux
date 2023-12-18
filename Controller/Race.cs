@@ -22,6 +22,7 @@ namespace Controller
             Track = track;
             Participants = participants;
             _random = new Random(DateTime.Now.Millisecond);
+            _positions = new Dictionary<Section, SectionData>();
 
             //First check if amount of participants doesn't exceed the limit
             CheckAmountOfParticipants();

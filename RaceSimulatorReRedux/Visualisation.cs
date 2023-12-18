@@ -132,7 +132,7 @@ namespace RaceSimulatorReRedux
             foreach (Section section in track.Sections)
             {
                 _currentSection = section;  //update section
-                DrawSection(DecideSectionToDraw(section), section);
+                DrawSection(DecideSectionToDraw(section), _currentSection);
                 if(section.SectionType == SectionTypes.LeftCorner || section.SectionType == SectionTypes.RightCorner)
                 {
                     ChangeDirection(section.SectionType);
@@ -201,12 +201,15 @@ namespace RaceSimulatorReRedux
             }
         }
 
+        //Draw the section with the given string array, reverse if necessary and add participants
         public static void DrawSection(string[] sectionLinesToDraw, Section currentSection)
         {
+            //Temporary cursors
             int tempX = _cursorX;
             int tempY = _cursorY;
-            bool reverse = ToReverseOrNotToReverse();
 
+            //Check if the array needs to be reversed if the direction is North or West, if so, reverse
+            bool reverse = ToReverseOrNotToReverse();
             if (reverse)
             {
                 Array.Reverse(sectionLinesToDraw);
@@ -214,6 +217,8 @@ namespace RaceSimulatorReRedux
 
             foreach (string line in sectionLinesToDraw)
             {
+                string lineWithParticipants = ShowParticipants(line, Data.CurrentRace.GetSectionData(_currentSection).Left, Data.CurrentRace.GetSectionData(_currentSection).Right);
+
                 Console.SetCursorPosition(tempX, tempY);
                 if(reverse)
                 {
@@ -320,7 +325,16 @@ namespace RaceSimulatorReRedux
             }
         }
 
+        //Replace placeholders with participants
+        public static string ShowParticipants(string input, IParticipant left, IParticipant right)
+        {
+            //Take first letters from the participant's names
+            string? leftParticipantIcon = left?.Name.Substring(0, 1);
+            string? rightParticipantIcon = right?.Name.Substring(0, 1);
 
-
+            //Check for both participants if they are null, if not, replace an eventual 1 or 2 with the participant's first names
+            string output = input.Replace("1", leftParticipantIcon ?? " ").Replace("2", rightParticipantIcon ?? " ");
+            return output;
+        }
     }
 }

@@ -48,7 +48,7 @@ namespace Controller
             //Very complicated track
             Competition.Tracks.Enqueue(new Track("Spa", new[]
             {
-                SectionTypes.Straight, SectionTypes.Straight, SectionTypes.StartGrid, SectionTypes.StartGrid,
+                SectionTypes.Straight, SectionTypes.StartGrid, SectionTypes.StartGrid, SectionTypes.StartGrid,
                 SectionTypes.Finish, SectionTypes.Straight, SectionTypes.Straight, SectionTypes.RightCorner,
                 SectionTypes.Straight, SectionTypes.LeftCorner, SectionTypes.Straight, SectionTypes.Straight,
                 SectionTypes.RightCorner, SectionTypes.RightCorner, SectionTypes.Straight, SectionTypes.Straight,
