@@ -41,8 +41,24 @@ namespace Controller
             Competition.Participants.Add(new Driver("Frederik Vesti", 0, new Car(20, 20, 17, false), TeamColors.Red));
         }
 
+        //Add tracks. Tracks always start on the top. 
         public static void AddTracks()
         {
+
+            //Very complicated track
+            Competition.Tracks.Enqueue(new Track("Spa", new[]
+            {
+                SectionTypes.Straight, SectionTypes.Straight, SectionTypes.StartGrid, SectionTypes.StartGrid,
+                SectionTypes.Finish, SectionTypes.Straight, SectionTypes.Straight, SectionTypes.RightCorner,
+                SectionTypes.Straight, SectionTypes.LeftCorner, SectionTypes.Straight, SectionTypes.Straight,
+                SectionTypes.RightCorner, SectionTypes.RightCorner, SectionTypes.Straight, SectionTypes.Straight,
+                SectionTypes.Straight,
+                SectionTypes.Straight, SectionTypes.RightCorner, SectionTypes.Straight, SectionTypes.LeftCorner,
+                SectionTypes.LeftCorner, SectionTypes.Straight, SectionTypes.RightCorner, SectionTypes.Straight,
+                SectionTypes.Straight, SectionTypes.LeftCorner, SectionTypes.RightCorner, SectionTypes.RightCorner,
+                SectionTypes.Straight, SectionTypes.Straight, SectionTypes.LeftCorner, SectionTypes.Straight,
+                SectionTypes.RightCorner, SectionTypes.RightCorner, SectionTypes.Straight
+            }));
             //Complicated track
             Competition.Tracks.Enqueue(new Track("Barcelona", new[]
             {
@@ -50,23 +66,23 @@ namespace Controller
                 SectionTypes.StartGrid,
                 SectionTypes.StartGrid,
                 SectionTypes.Finish,
+                SectionTypes.RightCorner,
+                SectionTypes.Straight,
+                SectionTypes.Straight,
+                SectionTypes.RightCorner,
+                SectionTypes.RightCorner,
                 SectionTypes.LeftCorner,
                 SectionTypes.Straight,
                 SectionTypes.Straight,
+                SectionTypes.Straight,
                 SectionTypes.LeftCorner,
-                SectionTypes.LeftCorner,
+                SectionTypes.Straight,
+                SectionTypes.RightCorner,
                 SectionTypes.RightCorner,
                 SectionTypes.Straight,
                 SectionTypes.Straight,
                 SectionTypes.Straight,
                 SectionTypes.RightCorner,
-                SectionTypes.Straight,
-                SectionTypes.LeftCorner,
-                SectionTypes.LeftCorner,
-                SectionTypes.Straight,
-                SectionTypes.Straight,
-                SectionTypes.Straight,
-                SectionTypes.LeftCorner,
                 SectionTypes.Straight,
 
             }));
@@ -77,16 +93,16 @@ namespace Controller
                 SectionTypes.StartGrid,
                 SectionTypes.StartGrid,
                 SectionTypes.Finish,
-                SectionTypes.LeftCorner,
+                SectionTypes.RightCorner,
                 SectionTypes.Straight,
-                SectionTypes.LeftCorner,
-                SectionTypes.Straight,
-                SectionTypes.Straight,
+                SectionTypes.RightCorner,
                 SectionTypes.Straight,
                 SectionTypes.Straight,
-                SectionTypes.LeftCorner,
                 SectionTypes.Straight,
-                SectionTypes.LeftCorner
+                SectionTypes.Straight,
+                SectionTypes.RightCorner,
+                SectionTypes.Straight,
+                SectionTypes.RightCorner
             }));
         }
     }
