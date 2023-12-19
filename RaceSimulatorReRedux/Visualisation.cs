@@ -117,6 +117,8 @@ namespace RaceSimulatorReRedux
             _cursorX = 10;
             _cursorY = 5;
             _currentDirection = Direction.East;     //A track always starts eastwards
+
+            Data.CurrentRace.DriversChanged += OnDriversChanged //Add event handler to CurrentRace event
         }
 
         //Draws track with the sections provided in the track variable
@@ -337,6 +339,12 @@ namespace RaceSimulatorReRedux
             //Check for both participants if they are null, if not, replace an eventual 1 or 2 with the participant's first names
             string output = input.Replace("1", leftParticipantIcon ?? " ").Replace("2", rightParticipantIcon ?? " ");
             return output;
+        }
+
+        //Event handler for drivers changed event
+        public static void OnDriversChanged (object sender, DriversChangedEventArgs dcea)
+        {
+            DrawTrack(dcea.EventTrack); 
         }
     }
 }

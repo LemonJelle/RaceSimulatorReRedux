@@ -12,10 +12,12 @@ namespace Controller
         public Track Track { get; set; }
         public DateTime StartTime { get; set; }
         public List<IParticipant> Participants { get; set; }
-        private System.Timers.Timer _timer { get; set; }
 
+        private System.Timers.Timer _timer { get; set; }
         private Random _random;
         private Dictionary<Section, SectionData> _positions;
+
+        public event EventHandler<DriversChangedEventArgs> DriversChanged;
 
         public Race(Track track, List<IParticipant> participants)
         {
