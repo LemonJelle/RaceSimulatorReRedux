@@ -12,17 +12,23 @@ namespace Controller
         public Track Track { get; set; }
         public DateTime StartTime { get; set; }
         public List<IParticipant> Participants { get; set; }
+        private System.Timers.Timer _timer { get; set; }
 
         private Random _random;
         private Dictionary<Section, SectionData> _positions;
 
         public Race(Track track, List<IParticipant> participants)
         {
-
+            //Initialise properties
             Track = track;
             Participants = participants;
+
             _random = new Random(DateTime.Now.Millisecond);
             _positions = new Dictionary<Section, SectionData>();
+            _timer = new System.Timers.Timer(500);
+
+            //Add event to elapsed timer property
+            _timer.Elapsed += OnTimedEvent;
 
             //First check if amount of participants doesn't exceed the limit
             CheckAmountOfParticipants();
@@ -115,6 +121,20 @@ namespace Controller
                     _positions[section] = sectionData;
                 }
             }
+        }
+
+        //Event attached to timer, this moves the participants
+        public void OnTimedEvent(object sender, EventArgs eea)
+        {
+
+        }
+
+        //Enable, set autoreset and start timer
+        public void Start()
+        {
+            _timer.Enabled = true;
+            _timer.AutoReset = true;
+            _timer.Start();
         }
     }
 }
