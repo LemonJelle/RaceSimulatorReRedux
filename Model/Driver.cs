@@ -6,20 +6,19 @@ using System.Threading.Tasks;
 
 namespace Model
 {
-    public interface IParticipant
+    public class Driver : IParticipant
     {
         public string Name { get; set; }
         public int Points { get; set; }
         public IEquipment Equipment { get; set; }
         public TeamColors TeamColor { get; set; }
-    }
 
-    public enum TeamColors
-    {
-        Red,
-        Green,
-        Yellow,
-        Grey,
-        Blue
+        public Driver(string name, int points, IEquipment equipment, TeamColors teamColor)
+        {
+            Name = name;
+            Points = points;
+            Equipment = equipment;
+            TeamColor = teamColor;
+        }
     }
 }
