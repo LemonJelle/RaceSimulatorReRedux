@@ -118,7 +118,7 @@ namespace RaceSimulatorReRedux
             _cursorY = 5;
             _currentDirection = Direction.East;     //A track always starts eastwards
 
-            Data.CurrentRace.DriversChanged += OnDriversChanged //Add event handler to CurrentRace event
+            Data.CurrentRace.DriversChanged += OnDriversChanged; //Add event handler to CurrentRace event
         }
 
         //Draws track with the sections provided in the track variable

@@ -16,6 +16,7 @@ namespace Controller
         private System.Timers.Timer _timer { get; set; }
         private Random _random;
         private Dictionary<Section, SectionData> _positions;
+        private int _sectionLength = 200;
 
         public event EventHandler<DriversChangedEventArgs> DriversChanged;
 
@@ -31,6 +32,8 @@ namespace Controller
 
             //Add event to elapsed timer property
             _timer.Elapsed += OnTimedEvent;
+            StartTimer();
+            
 
             //First check if amount of participants doesn't exceed the limit
             CheckAmountOfParticipants();
@@ -38,6 +41,127 @@ namespace Controller
             //Place participants on start and randomize equipment
             GiveParticipantsStartPosition();
             RandomizeEquipment();
+
+        }
+
+        //Advance participants every time the timer goes off
+        public void AdvanceParticipants()
+        {
+            //I'm using a stack here to put all the sections in, it's more logical to me, and easier to iterate through than a linkedlist
+            //This is the reverse of the track linkedlist, as stacks are LIFO, so the first section is at the bottom of the stack.
+
+            //Fill stack
+            Stack<Section> stackOfSections = new Stack<Section>();
+            foreach (Section section in Track.Sections)
+            {
+                stackOfSections.Push(section);
+            }
+
+            //Declare current section and previous section
+            Section currentSection; 
+            Section nextSection = Track.Sections.First(); //Start at first section of track, the stack is reversed so this is the next section
+            while (stackOfSections.Count > 0) 
+            {
+                currentSection = stackOfSections.Pop();
+
+                AdvanceTwoParticipants(currentSection, nextSection);
+
+                nextSection = currentSection;
+            }
+        }
+
+        public void AdvanceTwoParticipants(Section currentSection, Section nextSection)
+        {
+            //Set section data
+            SectionData currentSectionData = GetSectionData(currentSection);
+            SectionData nextSectionData = GetSectionData(nextSection);
+
+            //Left participant
+            //check if current section data is null, this shouldn't be the case if the participant is in it
+            //if it is occupied, add distance
+            if (currentSectionData.Left != null)
+            {
+                currentSectionData.DistanceLeft += CalculateSpeed(currentSectionData.Left.Equipment.Performance, currentSectionData.Left.Equipment.Speed);
+
+                //If distance exceeds 100, check if next section left is null, else move to right
+                if (nextSectionData.Left == null)
+                {
+                    //Transfer participant to next section
+                    nextSectionData.Left = currentSectionData.Left;
+
+                    //Set current section data to null
+                    currentSectionData.Left = null;
+
+                    //Set distance back to zero
+                    currentSectionData.DistanceLeft = 0;
+
+                }
+                else if (nextSectionData.Right == null)
+                {
+                    //Transfer participant to next section but on the right
+                    nextSectionData.Right = currentSectionData.Left;
+
+                    //Set current section data to null
+                    currentSectionData.Left = null;
+
+                    //Set distance back to zero
+                    currentSectionData.DistanceLeft = 0;
+                }
+                else
+                {
+                    //Participant can't advance, set distanceleft to 195 so they're at the end
+                    currentSectionData.DistanceLeft = 195;
+                }
+
+
+            }
+
+            //Right participant
+            //Set section data
+            currentSectionData = GetSectionData(currentSection);
+            nextSectionData = GetSectionData(nextSection);
+
+            //Right participant
+            //check if current section data is null, this shouldn't be the case if the participant is in it
+            //if it is occupied, add distance
+            if (currentSectionData.Right != null)
+            {
+                currentSectionData.DistanceRight += CalculateSpeed(currentSectionData.Right.Equipment.Performance, currentSectionData.Right.Equipment.Speed);
+
+                //If distance exceeds 100, check if next section right is null, else move to left
+                if (nextSectionData.Right == null)
+                {
+                    //Transfer participant to next section
+                    nextSectionData.Right = currentSectionData.Right;
+
+                    //Set current section data to null
+                    currentSectionData.Right = null;
+
+                    //Set distance back to zero
+                    currentSectionData.DistanceRight = 0;
+
+                }
+                else if (nextSectionData.Left == null)
+                {
+                    //Transfer participant to next section but on the right
+                    nextSectionData.Left = currentSectionData.Right;
+
+                    //Set current section data to null
+                    currentSectionData.Right = null;
+
+                    //Set distance back to zero
+                    currentSectionData.DistanceRight = 0;
+                }
+                else
+                {
+                    //Participant can't advance, set distanceright to 195 so they're at the end
+                    currentSectionData.DistanceRight = 195;
+                }
+
+            }
+        }
+        public void FillPositions()
+        {
 
         }
 
@@ -90,7 +214,7 @@ namespace Controller
             }
 
             //Get number of participants
-            int participants = Participants.Count;
+            int participantsNumber = Participants.Count;
 
             //Keep track of participants already placed, a counter of sorts
             int participantsAlreadyPlaced = 0;
@@ -104,7 +228,7 @@ namespace Controller
                 //Get data of each section
                 SectionData sectionData = GetSectionData(section);
                 //If there is still two or more participants left to place, take up two positions
-                if (participants - participantsAlreadyPlaced > 1)
+                if (participantsNumber - participantsAlreadyPlaced > 1)
                 {
                     //Left
                     sectionData.Left = Participants[participantsAlreadyPlaced];
@@ -116,9 +240,9 @@ namespace Controller
                 }
 
                 //if there is still one participant left to place, take up the left position 
-                else if (participants - participants == 1)
+                else if (participantsNumber - participantsNumber == 1)
                 {
-                    sectionData.Left = Participants[participants];
+                    sectionData.Left = Participants[participantsNumber];
                     participantsAlreadyPlaced += 1;
                     _positions[section] = sectionData;
                 }
@@ -128,15 +252,28 @@ namespace Controller
         //Event attached to timer, this moves the participants
         public void OnTimedEvent(object sender, EventArgs eea)
         {
+            //Move participants
+            AdvanceParticipants();
 
+            //Invoke DriversChanged event on this track
+            DriversChanged.Invoke(this, new DriversChangedEventArgs()
+            {
+                EventTrack = Track
+            });
+            
         }
 
         //Enable, set autoreset and start timer
-        public void Start()
+        public void StartTimer()
         {
             _timer.Enabled = true;
             _timer.AutoReset = true;
             _timer.Start();
+        }
+
+        public int CalculateSpeed(int performance, int speed) 
+        {
+            return performance * speed;  
         }
     }
 }
