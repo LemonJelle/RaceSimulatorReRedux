@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Model;
+using static System.Collections.Specialized.BitVector32;
+using static System.Net.Mime.MediaTypeNames;
+using Section = Model.Section;
 
 namespace Controller
 {
@@ -12,11 +15,16 @@ namespace Controller
         public Track Track { get; set; }
         public DateTime StartTime { get; set; }
         public List<IParticipant> Participants { get; set; }
+        public int Laps { get; set; }
 
         private System.Timers.Timer _timer { get; set; }
         private Random _random;
         private Dictionary<Section, SectionData> _positions;
+        private Dictionary<IParticipant, int> _lapsParticipants;
+        private Dictionary<IParticipant, int> _finalPosition;
+        private Dictionary<IParticipant, int> _points;
         private int _sectionLength = 200;
+
 
         public event EventHandler<DriversChangedEventArgs> DriversChanged;
 
@@ -30,10 +38,13 @@ namespace Controller
             _positions = new Dictionary<Section, SectionData>();
             _timer = new System.Timers.Timer(500);
 
+
             //Add event to elapsed timer property
             _timer.Elapsed += OnTimedEvent;
             StartTimer();
-            
+
+            //Fill laps participants dictionary for every participant, standard they're on 0 laps
+            InitialiseLapsParticipants();
 
             //First check if amount of participants doesn't exceed the limit
             CheckAmountOfParticipants();
@@ -58,7 +69,7 @@ namespace Controller
             }
 
             //Declare current section and previous section
-            Section currentSection; 
+            Section currentSection;
             Section nextSection = Track.Sections.First(); //Start at first section of track, the stack is reversed so this is the next section
             while (stackOfSections.Count > 0) 
             {
@@ -81,39 +92,40 @@ namespace Controller
             //if it is occupied, add distance
             if (currentSectionData.Left != null)
             {
-                currentSectionData.DistanceLeft += CalculateSpeed(currentSectionData.Left.Equipment.Performance, currentSectionData.Left.Equipment.Speed);
-
-                //If distance exceeds 100, check if next section left is null, else move to right
-                if (nextSectionData.Left == null)
+                currentSectionData.DistanceLeft += CalculateRealSpeed(currentSectionData.Left.Equipment.Performance, currentSectionData.Left.Equipment.Speed);
+                if (currentSectionData.DistanceLeft >= _sectionLength)
                 {
-                    //Transfer participant to next section
-                    nextSectionData.Left = currentSectionData.Left;
+                    if (nextSectionData.Left == null)
+                    {
+                        //Transfer participant to next section
+                        nextSectionData.Left = currentSectionData.Left;
 
-                    //Set current section data to null
-                    currentSectionData.Left = null;
+                        //Set current section data to null
+                        currentSectionData.Left = null;
 
-                    //Set distance back to zero
-                    currentSectionData.DistanceLeft = 0;
+                        //Set distance back to zero
+                        currentSectionData.DistanceLeft = 0;
 
+                    }
+                    //If distance exceeds 100, check if next section left is null, else move to right
+                    else if (nextSectionData.Right == null)
+                    {
+                        //Transfer participant to next section but on the right
+                        nextSectionData.Right = currentSectionData.Left;
+
+                        //Set current section data to null
+                        currentSectionData.Left = null;
+
+                        //Set distance back to zero
+                        currentSectionData.DistanceLeft = 0;
+                    }
+                    else
+                    {
+                        //Participant can't advance, set distance left to section length minus 5 so they're at the end
+                        currentSectionData.DistanceLeft = _sectionLength - 5;
+                    }
                 }
-                else if (nextSectionData.Right == null)
-                {
-                    //Transfer participant to next section but on the right
-                    nextSectionData.Right = currentSectionData.Left;
-
-                    //Set current section data to null
-                    currentSectionData.Left = null;
-
-                    //Set distance back to zero
-                    currentSectionData.DistanceLeft = 0;
-                }
-                else
-                {
-                    //Participant can't advance, set distanceleft to 195 so they're at the end
-                    currentSectionData.DistanceLeft = 195;
-                }
-
-
+   
             }
 
             //Right participant
@@ -126,38 +138,40 @@ namespace Controller
             //if it is occupied, add distance
             if (currentSectionData.Right != null)
             {
-                currentSectionData.DistanceRight += CalculateSpeed(currentSectionData.Right.Equipment.Performance, currentSectionData.Right.Equipment.Speed);
+                currentSectionData.DistanceRight += CalculateRealSpeed(currentSectionData.Right.Equipment.Performance, currentSectionData.Right.Equipment.Speed);
 
                 //If distance exceeds 100, check if next section right is null, else move to left
-                if (nextSectionData.Right == null)
+                if (currentSectionData.DistanceRight >= _sectionLength)
                 {
-                    //Transfer participant to next section
-                    nextSectionData.Right = currentSectionData.Right;
+                    if (nextSectionData.Right == null)
+                    {
+                        //Transfer participant to next section
+                        nextSectionData.Right = currentSectionData.Right;
 
-                    //Set current section data to null
-                    currentSectionData.Right = null;
+                        //Set current section data to null
+                        currentSectionData.Right = null;
 
-                    //Set distance back to zero
-                    currentSectionData.DistanceRight = 0;
+                        //Set distance back to zero
+                        currentSectionData.DistanceRight = 0;
 
+                    }
+                    else if (nextSectionData.Left == null)
+                    {
+                        //Transfer participant to next section but on the right
+                        nextSectionData.Left = currentSectionData.Right;
+
+                        //Set current section data to null
+                        currentSectionData.Right = null;
+
+                        //Set distance back to zero
+                        currentSectionData.DistanceRight = 0;
+                    }
+                    else
+                    {
+                        //Participant can't advance, set distanceright to 195 so they're at the end
+                        currentSectionData.DistanceRight = _sectionLength - 5;
+                    }
                 }
-                else if (nextSectionData.Left == null)
-                {
-                    //Transfer participant to next section but on the right
-                    nextSectionData.Left = currentSectionData.Right;
-
-                    //Set current section data to null
-                    currentSectionData.Right = null;
-
-                    //Set distance back to zero
-                    currentSectionData.DistanceRight = 0;
-                }
-                else
-                {
-                    //Participant can't advance, set distanceright to 195 so they're at the end
-                    currentSectionData.DistanceRight = 195;
-                }
-
             }
         }
         public void FillPositions()
@@ -271,9 +285,31 @@ namespace Controller
             _timer.Start();
         }
 
-        public int CalculateSpeed(int performance, int speed) 
+        //Calculates the actual speed of participants
+        public int CalculateRealSpeed(int performance, int speed) 
         {
             return performance * speed;  
         }
+
+        //Initialises the lapsparticipants dictionary, loops through participants and sets laps to 0
+        public void InitialiseLapsParticipants()
+        {
+            foreach (IParticipant participant in Participants)
+            {
+                _lapsParticipants[participant] = 0;
+            }
+        }
+
+        public bool IsParticipantFinish(Section section, IParticipant participant)
+        {
+            if(section.SectionType == SectionTypes.Finish && GetSectionData(section).Left != null || GetSectionData(section).Right != null)
+            {
+                return true;
+            } 
+            else
+            {
+                return false;
+            }
+        } 
     }
 }

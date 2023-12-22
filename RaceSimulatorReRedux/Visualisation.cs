@@ -233,14 +233,14 @@ namespace RaceSimulatorReRedux
                 }
                 tempY++;
             }
-
+            //Reverse again if the new direction is north or west
             if (reverse)
             {
                 Array.Reverse(sectionLinesToDraw);
             }
         }
 
-        //Reverses the input string by converting it to a char array, reversing it and returning the new string.
+        //Reverses the input string by converting it to a char array, reversing it and returning the new string
         public static string ReverseString(string input)
         {
             char[] charArray = input.ToCharArray();
