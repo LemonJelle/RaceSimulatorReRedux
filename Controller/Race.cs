@@ -71,7 +71,7 @@ namespace Controller
             //Declare current section and previous section
             Section currentSection;
             Section nextSection = Track.Sections.First(); //Start at first section of track, the stack is reversed so this is the next section
-            while (stackOfSections.Count > 0) 
+            while (stackOfSections.Count > 0)
             {
                 currentSection = stackOfSections.Pop();
 
@@ -125,7 +125,7 @@ namespace Controller
                         currentSectionData.DistanceLeft = _sectionLength - 5;
                     }
                 }
-   
+
             }
 
             //Right participant
@@ -173,10 +173,6 @@ namespace Controller
                     }
                 }
             }
-        }
-        public void FillPositions()
-        {
-
         }
 
         public SectionData GetSectionData(Section section)
@@ -274,7 +270,7 @@ namespace Controller
             {
                 EventTrack = Track
             });
-            
+
         }
 
         //Enable, set autoreset and start timer
@@ -286,9 +282,9 @@ namespace Controller
         }
 
         //Calculates the actual speed of participants
-        public int CalculateRealSpeed(int performance, int speed) 
+        public int CalculateRealSpeed(int performance, int speed)
         {
-            return performance * speed;  
+            return performance * speed;
         }
 
         //Initialises the lapsparticipants dictionary, loops through participants and sets laps to 0
@@ -302,14 +298,20 @@ namespace Controller
 
         public bool IsParticipantFinish(Section section, IParticipant participant)
         {
-            if(section.SectionType == SectionTypes.Finish && GetSectionData(section).Left != null || GetSectionData(section).Right != null)
+            if (section.SectionType == SectionTypes.Finish)
             {
+                _lapsParticipants[participant]++;
                 return true;
-            } 
+            }
             else
             {
                 return false;
             }
-        } 
+        }
+
+        public void RemoveParticipant(IParticipant participant)
+        {
+
+        }
     }
 }
