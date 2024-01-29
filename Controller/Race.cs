@@ -73,7 +73,7 @@ namespace Controller
             //Declare current section and previous section
             Section currentSection;
             Section nextSection = Track.Sections.First(); //Start at first section of track, the stack is reversed so this is the next section
-            while (stackOfSections.Count > 0) 
+            while (stackOfSections.Count > 0)
             {
                 currentSection = stackOfSections.Pop();
 
@@ -139,7 +139,7 @@ namespace Controller
                         currentSectionData.DistanceLeft = _sectionLength - 5;
                     }
                 }
-   
+
             }
 
             //Right participant
@@ -201,6 +201,14 @@ namespace Controller
                     }
                 }
             }
+        }
+
+        {
+
+        }
+
+        {
+
         }
 
         public SectionData GetSectionData(Section section)
@@ -298,7 +306,7 @@ namespace Controller
             {
                 EventTrack = Track
             });
-            
+
         }
 
         //Enable, set autoreset and start timer
@@ -310,9 +318,9 @@ namespace Controller
         }
 
         //Calculates the actual speed of participants
-        public int CalculateRealSpeed(int performance, int speed) 
+        public int CalculateRealSpeed(int performance, int speed)
         {
-            return performance * speed;  
+            return performance * speed;
         }
 
         //Loops through participants and sets laps to -1, every participant starts with -1 laps. -1 accounts for the fact that the participants will cross the finish line immediately
@@ -331,14 +339,6 @@ namespace Controller
             ParticipantsLaps[participant]++;
 
         }
-
-
-        //Check if the section is a finish, if not, 
-        public bool IsParticipantOnFinish(IParticipant participant, Section section) 
-        {
-            return section.SectionType == SectionTypes.Finish;
-        }
-
         //If there is a current participant, add a new lap
         //If the total lap number doesn't exceed the race lap number as defined in _laps, return false so the participant can continue
         //If the lap number equates to the race lap number, the participant is considered as finished, remove the participant from the _participantslaps dictionary and change the sectiondata to null
@@ -373,9 +373,17 @@ namespace Controller
                 
                 
               
-            }
+            } 
            
 
         }
+            {
+                return false;
+            } 
+        } 
+            {
+                return false;
+            }
+        } 
     }
 }
