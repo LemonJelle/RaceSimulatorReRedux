@@ -126,7 +126,7 @@ namespace RaceSimulatorReRedux
         {
             //Write track name and leader lap
             Console.SetCursorPosition(0, 0);
-            Console.WriteLine($"Track name: {track.Name}, {Data.CurrentRace.Laps} laps");
+            Console.WriteLine($"Track name: {track.Name}");
             Console.WriteLine($"Current lap: {Data.CurrentRace.ParticipantsLaps[Data.CurrentRace.Participants.First()]}/{Data.CurrentRace.Laps} laps");
 
             Console.SetCursorPosition(_cursorX, _cursorY); //Set cursor position to track draw start
