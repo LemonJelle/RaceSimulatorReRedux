@@ -124,9 +124,10 @@ namespace RaceSimulatorReRedux
         //Draws track with the sections provided in the track variable
         public static void DrawTrack(Track track)
         {
-            //Write track name
+            //Write track name and leader lap
             Console.SetCursorPosition(0, 0);
-            Console.Write($"Track name: {track.Name}");
+            Console.WriteLine($"Track name: {track.Name}, {Data.CurrentRace.Laps} laps");
+            Console.WriteLine($"Current lap: {Data.CurrentRace.ParticipantsLaps[Data.CurrentRace.Participants.First()]}/{Data.CurrentRace.Laps} laps");
 
             Console.SetCursorPosition(_cursorX, _cursorY); //Set cursor position to track draw start
 

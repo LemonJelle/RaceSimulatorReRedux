@@ -15,16 +15,17 @@ namespace Controller
         public Track Track { get; set; }
         public DateTime StartTime { get; set; }
         public List<IParticipant> Participants { get; set; }
-        public int Laps { get; set; }
+      
 
         private System.Timers.Timer _timer { get; set; }
         private Random _random;
         private Dictionary<Section, SectionData> _positions;
-        private Dictionary<IParticipant, int> _lapsParticipants;
         private Dictionary<IParticipant, int> _finalPosition;
         private Dictionary<IParticipant, int> _points;
         private int _sectionLength = 200;
 
+        public Dictionary<IParticipant, int> ParticipantsLaps;
+        public int Laps = 3;
 
         public event EventHandler<DriversChangedEventArgs> DriversChanged;
 
@@ -44,7 +45,8 @@ namespace Controller
             StartTimer();
 
             //Fill laps participants dictionary for every participant, standard they're on 0 laps
-            InitialiseLapsParticipants();
+            ParticipantsLaps = new Dictionary<IParticipant, int>();
+            FillParticipantsLaps();
 
             //First check if amount of participants doesn't exceed the limit
             CheckAmountOfParticipants();
@@ -100,6 +102,12 @@ namespace Controller
                         //Transfer participant to next section
                         nextSectionData.Left = currentSectionData.Left;
 
+                        //Check if the participant is on the finish
+                        if (IsParticipantOnFinish(nextSectionData.Left, nextSection))
+                        {
+                            LapOrFinish(nextSectionData, nextSectionData.Left);
+                        }
+
                         //Set current section data to null
                         currentSectionData.Left = null;
 
@@ -112,6 +120,12 @@ namespace Controller
                     {
                         //Transfer participant to next section but on the right
                         nextSectionData.Right = currentSectionData.Left;
+
+                        //Check if the participant is on the finish
+                        if (IsParticipantOnFinish(nextSectionData.Right, nextSection))
+                        {
+                            LapOrFinish(nextSectionData, nextSectionData.Right);
+                        }
 
                         //Set current section data to null
                         currentSectionData.Left = null;
@@ -148,6 +162,13 @@ namespace Controller
                         //Transfer participant to next section
                         nextSectionData.Right = currentSectionData.Right;
 
+                        //Check if the participant is on the finish
+                        if (IsParticipantOnFinish(nextSectionData.Right, nextSection))
+                        {
+                            LapOrFinish(nextSectionData, nextSectionData.Right);
+                        }
+                        
+
                         //Set current section data to null
                         currentSectionData.Right = null;
 
@@ -159,6 +180,13 @@ namespace Controller
                     {
                         //Transfer participant to next section but on the right
                         nextSectionData.Left = currentSectionData.Right;
+
+                        //Check if the participant is on the finish
+                        if (IsParticipantOnFinish(nextSectionData.Left, nextSection))
+                        {
+                            LapOrFinish(nextSectionData, nextSectionData.Left);
+                        }
+                        
 
                         //Set current section data to null
                         currentSectionData.Right = null;
@@ -173,10 +201,6 @@ namespace Controller
                     }
                 }
             }
-        }
-        public void FillPositions()
-        {
-
         }
 
         public SectionData GetSectionData(Section section)
@@ -291,25 +315,67 @@ namespace Controller
             return performance * speed;  
         }
 
-        //Initialises the lapsparticipants dictionary, loops through participants and sets laps to 0
-        public void InitialiseLapsParticipants()
+        //Loops through participants and sets laps to -1, every participant starts with -1 laps. -1 accounts for the fact that the participants will cross the finish line immediately
+        public void FillParticipantsLaps()
         {
+            ParticipantsLaps = new Dictionary<IParticipant, int>();
             foreach (IParticipant participant in Participants)
             {
-                _lapsParticipants[participant] = 0;
+                ParticipantsLaps[participant] = -1;
             }
         }
 
-        public bool IsParticipantFinish(Section section, IParticipant participant)
+        //Adds 1 lap to the participantslaps dictionary for the given participant
+        public void NewLap(IParticipant participant)
         {
-            if(section.SectionType == SectionTypes.Finish && GetSectionData(section).Left != null || GetSectionData(section).Right != null)
+            ParticipantsLaps[participant]++;
+
+        }
+
+
+        //Check if the section is a finish, if not, 
+        public bool IsParticipantOnFinish(IParticipant participant, Section section) 
+        {
+            return section.SectionType == SectionTypes.Finish;
+        }
+
+        //If there is a current participant, add a new lap
+        //If the total lap number doesn't exceed the race lap number as defined in _laps, return false so the participant can continue
+        //If the lap number equates to the race lap number, the participant is considered as finished, remove the participant from the _participantslaps dictionary and change the sectiondata to null
+        //Also return true to indicate that the participant needs to be yeeted off the race
+        public void LapOrFinish(SectionData finishSectionData, IParticipant currentParticipant)
+        {
+            //Add participant
+            //IParticipant currentParticipant;
+            //if (finishSectionData.Left != null)
+            //{
+            //    currentParticipant = finishSectionData.Left;
+            //} else if (finishSectionData.Right != null)
+            //{
+            //    currentParticipant = finishSectionData.Right;
+            //}
+
+            if(currentParticipant != null)
             {
-                return true;
-            } 
-            else
-            {
-                return false;
+                NewLap(currentParticipant);
+                if (ParticipantsLaps[currentParticipant] >= Laps)
+                {
+                    ParticipantsLaps.Remove(currentParticipant);
+                    if (finishSectionData.Left == currentParticipant)
+                    {
+                        finishSectionData.Left = null;
+                    }
+                    else if (finishSectionData.Right == currentParticipant) ;
+                    {
+                        finishSectionData.Right = null;
+                    }
+                }
+                
+                
+              
             }
-        } 
+           
+
+        }
     }
 }
