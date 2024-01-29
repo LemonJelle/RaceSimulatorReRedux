@@ -103,7 +103,7 @@ namespace Controller
                         nextSectionData.Left = currentSectionData.Left;
 
                         //Check if the participant is on the finish
-                        if (IsParticipantOnFinish(nextSectionData.Left, nextSection))
+                        if (IsParticipantOnFinish(nextSection))
                         {
                             LapOrFinish(nextSectionData, nextSectionData.Left);
                         }
@@ -122,7 +122,7 @@ namespace Controller
                         nextSectionData.Right = currentSectionData.Left;
 
                         //Check if the participant is on the finish
-                        if (IsParticipantOnFinish(nextSectionData.Right, nextSection))
+                        if (IsParticipantOnFinish(nextSection))
                         {
                             LapOrFinish(nextSectionData, nextSectionData.Right);
                         }
@@ -163,7 +163,7 @@ namespace Controller
                         nextSectionData.Right = currentSectionData.Right;
 
                         //Check if the participant is on the finish
-                        if (IsParticipantOnFinish(nextSectionData.Right, nextSection))
+                        if (IsParticipantOnFinish(nextSection))
                         {
                             LapOrFinish(nextSectionData, nextSectionData.Right);
                         }
@@ -182,7 +182,7 @@ namespace Controller
                         nextSectionData.Left = currentSectionData.Right;
 
                         //Check if the participant is on the finish
-                        if (IsParticipantOnFinish(nextSectionData.Left, nextSection))
+                        if (IsParticipantOnFinish(nextSection))
                         {
                             LapOrFinish(nextSectionData, nextSectionData.Left);
                         }
@@ -332,9 +332,9 @@ namespace Controller
 
         }
         //If there is a current participant, add a new lap
-        //If the total lap number doesn't exceed the race lap number as defined in _laps, do nothing as the participant can just continue
+        //If the total lap number doesn't exceed the race lap number as defined in _laps, return false so the participant can continue
         //If the lap number equates to the race lap number, the participant is considered as finished, remove the participant from the _participantslaps dictionary and change the sectiondata to null
-        
+        //Also return true to indicate that the participant needs to be yeeted off the race
         public void LapOrFinish(SectionData finishSectionData, IParticipant currentParticipant)
         {
             //Add participant
@@ -366,7 +366,12 @@ namespace Controller
             }
         }
 
-        //Cleans up all event handlers of the DriversChanged event
+        public bool IsParticipantOnFinish(Section section)
+        {
+            return section.SectionType == SectionTypes.Finish;
+        }
+
+
         private void CleanUp()
         {
             DriversChanged = null;
