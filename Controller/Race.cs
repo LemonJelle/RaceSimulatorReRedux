@@ -203,14 +203,6 @@ namespace Controller
             }
         }
 
-        {
-
-        }
-
-        {
-
-        }
-
         public SectionData GetSectionData(Section section)
         {
             //Return the sectiondata for the given section
@@ -355,7 +347,7 @@ namespace Controller
             //    currentParticipant = finishSectionData.Right;
             //}
 
-            if(currentParticipant != null)
+            if (currentParticipant != null)
             {
                 NewLap(currentParticipant);
                 if (ParticipantsLaps[currentParticipant] >= Laps)
@@ -370,20 +362,8 @@ namespace Controller
                         finishSectionData.Right = null;
                     }
                 }
-                
-                
-              
-            } 
-           
 
-        }
-            {
-                return false;
-            } 
-        } 
-            {
-                return false;
             }
-        } 
+        }
     }
 }
