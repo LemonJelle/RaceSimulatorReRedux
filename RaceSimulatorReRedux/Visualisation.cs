@@ -109,13 +109,14 @@ namespace RaceSimulatorReRedux
         private static int _cursorY;                    //Cursor Y position
         private static Direction _currentDirection;     //Direction the track is being drawn in, this changes in the corners
         private static Section _currentSection;         //Current section that is being drawn
+       
 
         //Initalise the visualisation by setting relevant properties
         public static void Initialise(Race race)
         {
             Console.Clear();
             _cursorX = 10;
-            _cursorY = 5;
+            _cursorY = 10;
             _currentDirection = Direction.East;     //A track always starts eastwards
 
             Data.CurrentRace.DriversChanged += OnDriversChanged; //Add event handler to CurrentRace event
@@ -127,7 +128,7 @@ namespace RaceSimulatorReRedux
             //Write track name and leader lap
             Console.SetCursorPosition(0, 0);
             Console.WriteLine($"Track name: {track.Name}");
-            Console.WriteLine($"Current lap: {Data.CurrentRace.ParticipantsLaps[Data.CurrentRace.Participants.First()]}/{Data.CurrentRace.Laps} laps");
+            //Console.WriteLine($"Current lap: {Data.CurrentRace.ParticipantsLaps[Data.CurrentRace.Participants.First()]}/{Data.CurrentRace.Laps} laps");
 
             Console.SetCursorPosition(_cursorX, _cursorY); //Set cursor position to track draw start
 
@@ -346,6 +347,13 @@ namespace RaceSimulatorReRedux
         public static void OnDriversChanged (object sender, DriversChangedEventArgs dcea)
         {
             DrawTrack(dcea.EventTrack); 
+        }
+
+        //Event handler for next race event, initialises the visualisation with a new race and couples the OnDriversChanged event handler to the new DriversChanged event
+        public static void OnNextRaceEvent(object sender, NextRaceEventArgs nre)
+        {
+            Initialise(nre.NextEventRace);
+            Data.CurrentRace.DriversChanged += OnDriversChanged;
         }
     }
 }

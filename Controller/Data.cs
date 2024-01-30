@@ -13,6 +13,10 @@ namespace Controller
         public static Competition Competition { get; set; }
         public static Race CurrentRace { get; set; }
 
+        public static event EventHandler<NextRaceEventArgs> NextRaceEvent;
+
+        public static event EventHandler<NextRaceEventArgs> CompetitionFinished;
+
 
         public static void Initalise()
         {
@@ -21,12 +25,27 @@ namespace Controller
             AddTracks();
         }
 
-        //Go to the next race if there is a next track
+        //Go to the next race if there is a next track, if there is none 
         public static void NextRace()
         {
-            if (Competition.NextTrack != null)
+            CurrentRace?.CleanUp();
+            Track nextTrack = Competition.NextTrack();
+            if (nextTrack != null)
             {
-                CurrentRace = new Race(Competition.NextTrack(), Competition.Participants);
+                CurrentRace = new Race(nextTrack, Competition.Participants);
+                CurrentRace.RaceIsOver += OnRaceIsOver;
+                NextRaceEvent?.Invoke(null, new NextRaceEventArgs()
+                {
+                    NextEventRace = CurrentRace
+                });
+            }
+            else
+            {
+                CompetitionFinished?.Invoke(null, new NextRaceEventArgs()
+                {
+                    NextEventRace = null
+                });
+
             }
         }
 
@@ -104,6 +123,13 @@ namespace Controller
                 SectionTypes.Straight,
                 SectionTypes.RightCorner
             }));
+           
+        }
+
+        //Executes a next race
+        private static void OnRaceIsOver(object sender, EventArgs eventArgs)
+        {
+            NextRace();
         }
     }
 }

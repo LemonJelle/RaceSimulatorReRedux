@@ -25,9 +25,10 @@ namespace Controller
         private int _sectionLength = 200;
 
         public Dictionary<IParticipant, int> ParticipantsLaps;
-        public int Laps = 3;
+        public int Laps = 2;
 
         public event EventHandler<DriversChangedEventArgs> DriversChanged;
+        public event EventHandler<EventArgs> RaceIsOver;
 
         public Race(Track track, List<IParticipant> participants)
         {
@@ -287,7 +288,7 @@ namespace Controller
             }
         }
 
-        //Event attached to timer, this moves the participants
+        //Event attached to timer, this moves the participants and finishes the race
         public void OnTimedEvent(object sender, EventArgs eea)
         {
             //Move participants
@@ -298,6 +299,12 @@ namespace Controller
             {
                 EventTrack = Track
             });
+
+            if(IsRaceFinished())
+            {
+                _timer.Stop();
+                RaceIsOver.Invoke(this, new EventArgs());
+            }
 
         }
 
@@ -366,15 +373,25 @@ namespace Controller
             }
         }
 
+        //Check if participant is on finish, the section needs to be a Finish sectiontype
         public bool IsParticipantOnFinish(Section section)
         {
             return section.SectionType == SectionTypes.Finish;
         }
 
 
-        private void CleanUp()
+        //Clean up the race
+        public void CleanUp()
         {
             DriversChanged = null;
+            RaceIsOver = null;
+        }
+
+        //Check if race is finished, the FirstOrDefault() method checks whether there are any sectiondata values that aren't null. 
+        //If there is a sectiondata value not null on either left or right side, the method returns false as the race isn't finished yet
+        public bool IsRaceFinished()
+        {
+            return _positions.Values.FirstOrDefault(sd => sd.Left != null || sd.Right != null) == null;
         }
     }
 }
