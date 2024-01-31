@@ -339,42 +339,11 @@ namespace RaceSimulatorReRedux
             string? leftParticipantIcon = left?.Name.Substring(0, 1);
             string? rightParticipantIcon = right?.Name.Substring(0, 1);
 
-            //Define output string 
-            string output = (string)input.Clone();
-
             //Check if left and right are null, if they are they must be replaced by " ".
             //If left is broken, replace with X 
-            if (left != null)
-            {
-                if (left.Equipment.IsBroken)
-                {
-                    input = input.Replace("1", "X");
-                }
-                else
-                {
-                    input = input.Replace("1", leftParticipantIcon);
-                }
-            }
-            else
-            {
-                input = input.Replace("1", " ");
-            }
+            input = left != null ? input.Replace("1", left.Equipment.IsBroken ? "X" : leftParticipantIcon) : input.Replace("1", " ");
             
-            if (right != null)
-            {
-                if (right.Equipment.IsBroken)
-                {
-                    input = input.Replace("2", "X");
-                }
-                else
-                {
-                    input = input.Replace("2", rightParticipantIcon);
-                }
-            }
-            else
-            {
-                input = input.Replace("2", " ");
-            }
+            input = right != null ? input.Replace("2", right.Equipment.IsBroken ? "X" : rightParticipantIcon) : input.Replace("2", " ");
 
             return input;
         }
