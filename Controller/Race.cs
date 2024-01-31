@@ -95,112 +95,113 @@ namespace Controller
             //if it is occupied, add distance
             if (currentSectionData.Left != null)
             {
-                currentSectionData.DistanceLeft += CalculateRealSpeed(currentSectionData.Left.Equipment.Performance, currentSectionData.Left.Equipment.Speed);
-                if (currentSectionData.DistanceLeft >= _sectionLength)
+                if (!currentSectionData.Left.Equipment.IsBroken)
                 {
-                    if (nextSectionData.Left == null)
+                    currentSectionData.DistanceLeft += CalculateRealSpeed(currentSectionData.Left.Equipment.Performance, currentSectionData.Left.Equipment.Speed);
+                    if (currentSectionData.DistanceLeft >= _sectionLength)
                     {
-                        //Transfer participant to next section
-                        nextSectionData.Left = currentSectionData.Left;
-
-                        //Check if the participant is on the finish
-                        if (IsParticipantOnFinish(nextSection))
+                        if (nextSectionData.Left == null)
                         {
-                            LapOrFinish(nextSectionData, nextSectionData.Left);
+                            //Transfer participant to next section
+                            nextSectionData.Left = currentSectionData.Left;
+
+                            //Check if the participant is on the finish
+                            if (IsParticipantOnFinish(nextSection))
+                            {
+                                LapOrFinish(nextSectionData, nextSectionData.Left);
+                            }
+
+                            //Set current section data to null
+                            currentSectionData.Left = null;
+
+                            //Set distance back to zero
+                            currentSectionData.DistanceLeft = 0;
+
                         }
-
-                        //Set current section data to null
-                        currentSectionData.Left = null;
-
-                        //Set distance back to zero
-                        currentSectionData.DistanceLeft = 0;
-
-                    }
-                    //If distance exceeds 100, check if next section left is null, else move to right
-                    else if (nextSectionData.Right == null)
-                    {
-                        //Transfer participant to next section but on the right
-                        nextSectionData.Right = currentSectionData.Left;
-
-                        //Check if the participant is on the finish
-                        if (IsParticipantOnFinish(nextSection))
+                        //If distance exceeds 100, check if next section left is null, else move to right
+                        else if (nextSectionData.Right == null)
                         {
-                            LapOrFinish(nextSectionData, nextSectionData.Right);
+                            //Transfer participant to next section but on the right
+                            nextSectionData.Right = currentSectionData.Left;
+
+                            //Check if the participant is on the finish
+                            if (IsParticipantOnFinish(nextSection))
+                            {
+                                LapOrFinish(nextSectionData, nextSectionData.Right);
+                            }
+
+                            //Set current section data to null
+                            currentSectionData.Left = null;
+
+                            //Set distance back to zero
+                            currentSectionData.DistanceLeft = 0;
                         }
-
-                        //Set current section data to null
-                        currentSectionData.Left = null;
-
-                        //Set distance back to zero
-                        currentSectionData.DistanceLeft = 0;
-                    }
-                    else
-                    {
-                        //Participant can't advance, set distance left to section length minus 5 so they're at the end
-                        currentSectionData.DistanceLeft = _sectionLength - 5;
+                        else
+                        {
+                            //Participant can't advance, set distance left to section length minus 5 so they're at the end
+                            currentSectionData.DistanceLeft = _sectionLength - 5;
+                        }
                     }
                 }
-
             }
-
-            //Right participant
-            //Set section data
-            currentSectionData = GetSectionData(currentSection);
-            nextSectionData = GetSectionData(nextSection);
 
             //Right participant
             //check if current section data is null, this shouldn't be the case if the participant is in it
             //if it is occupied, add distance
             if (currentSectionData.Right != null)
             {
-                currentSectionData.DistanceRight += CalculateRealSpeed(currentSectionData.Right.Equipment.Performance, currentSectionData.Right.Equipment.Speed);
-
-                //If distance exceeds 100, check if next section right is null, else move to left
-                if (currentSectionData.DistanceRight >= _sectionLength)
+                if (!currentSectionData.Right.Equipment.IsBroken)
                 {
-                    if (nextSectionData.Right == null)
-                    {
-                        //Transfer participant to next section
-                        nextSectionData.Right = currentSectionData.Right;
+                    currentSectionData.DistanceRight += CalculateRealSpeed(currentSectionData.Right.Equipment.Performance, currentSectionData.Right.Equipment.Speed);
 
-                        //Check if the participant is on the finish
-                        if (IsParticipantOnFinish(nextSection))
+                    //If distance exceeds 100, check if next section right is null, else move to left
+                    if (currentSectionData.DistanceRight >= _sectionLength)
+                    {
+                        if (nextSectionData.Right == null)
                         {
-                            LapOrFinish(nextSectionData, nextSectionData.Right);
+                            //Transfer participant to next section
+                            nextSectionData.Right = currentSectionData.Right;
+
+                            //Check if the participant is on the finish
+                            if (IsParticipantOnFinish(nextSection))
+                            {
+                                LapOrFinish(nextSectionData, nextSectionData.Right);
+                            }
+
+
+                            //Set current section data to null
+                            currentSectionData.Right = null;
+
+                            //Set distance back to zero
+                            currentSectionData.DistanceRight = 0;
+
                         }
-                        
-
-                        //Set current section data to null
-                        currentSectionData.Right = null;
-
-                        //Set distance back to zero
-                        currentSectionData.DistanceRight = 0;
-
-                    }
-                    else if (nextSectionData.Left == null)
-                    {
-                        //Transfer participant to next section but on the right
-                        nextSectionData.Left = currentSectionData.Right;
-
-                        //Check if the participant is on the finish
-                        if (IsParticipantOnFinish(nextSection))
+                        else if (nextSectionData.Left == null)
                         {
-                            LapOrFinish(nextSectionData, nextSectionData.Left);
+                            //Transfer participant to next section but on the right
+                            nextSectionData.Left = currentSectionData.Right;
+
+                            //Check if the participant is on the finish
+                            if (IsParticipantOnFinish(nextSection))
+                            {
+                                LapOrFinish(nextSectionData, nextSectionData.Left);
+                            }
+
+
+                            //Set current section data to null
+                            currentSectionData.Right = null;
+
+                            //Set distance back to zero
+                            currentSectionData.DistanceRight = 0;
                         }
-                        
-
-                        //Set current section data to null
-                        currentSectionData.Right = null;
-
-                        //Set distance back to zero
-                        currentSectionData.DistanceRight = 0;
-                    }
-                    else
-                    {
-                        //Participant can't advance, set distanceright to 195 so they're at the end
-                        currentSectionData.DistanceRight = _sectionLength - 5;
+                        else
+                        {
+                            //Participant can't advance, set distanceright to 195 so they're at the end
+                            currentSectionData.DistanceRight = _sectionLength - 5;
+                        }
                     }
                 }
+                
             }
         }
 
@@ -233,8 +234,8 @@ namespace Controller
         {
             foreach (var participant in Participants)
             {
-                participant.Equipment.Quality = _random.Next();
-                participant.Equipment.Performance = _random.Next();
+                participant.Equipment.Quality = _random.Next(10, 20);
+                participant.Equipment.Performance = _random.Next(10, 20);
             }
         }
 
@@ -291,6 +292,9 @@ namespace Controller
         //Event attached to timer, this moves the participants and finishes the race
         public void OnTimedEvent(object sender, EventArgs eea)
         {
+            //Wreck or fix participants
+            WreckOrFixParticipants();
+
             //Move participants
             AdvanceParticipants();
 
@@ -344,15 +348,7 @@ namespace Controller
         //Also return true to indicate that the participant needs to be yeeted off the race
         public void LapOrFinish(SectionData finishSectionData, IParticipant currentParticipant)
         {
-            //Add participant
-            //IParticipant currentParticipant;
-            //if (finishSectionData.Left != null)
-            //{
-            //    currentParticipant = finishSectionData.Left;
-            //} else if (finishSectionData.Right != null)
-            //{
-            //    currentParticipant = finishSectionData.Right;
-            //}
+           
 
             if (currentParticipant != null)
             {
@@ -392,6 +388,40 @@ namespace Controller
         public bool IsRaceFinished()
         {
             return _positions.Values.FirstOrDefault(sd => sd.Left != null || sd.Right != null) == null;
+        }
+
+        //Destroys or fixes participants based on a probability
+        public void WreckOrFixParticipants()
+        {
+            //Loop through all participants
+            foreach (IParticipant participant in Participants)
+            {
+                //Create new random object
+                Random random = new Random();
+
+                //The chance that participants are wrecked is based on the quality, the higher the quality, the lower the chance they'll break.
+                //Performance and speed also have a smaller impact on the chance, the higher the stats, the higher the probability they'll break down.
+                int chanceToDie = (20 - participant.Equipment.Quality) + (participant.Equipment.Speed / 4) + (participant.Equipment.Performance / 4);
+
+                //A number between 0 and 100 is calculated. 
+                if (random.Next(0, 100) < chanceToDie)
+                {
+                    participant.Equipment.IsBroken = true;
+                }
+
+                //The chance that participants will be fixed is 10%, so it might take a while
+                if (participant.Equipment.IsBroken)
+                {
+                    if (random.Next(0, 100) < 10)
+                    {
+                        participant.Equipment.IsBroken = false;
+
+                        //Lower speed and performance by 1 every time the participant gets fixed
+                        participant.Equipment.Speed--;
+                    }
+                }
+
+            }
         }
     }
 }

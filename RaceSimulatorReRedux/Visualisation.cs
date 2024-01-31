@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using Controller;
@@ -318,7 +319,7 @@ namespace RaceSimulatorReRedux
             }
         }
 
-        //If the direction is north or west, the sections should be reversed. 
+        //If the direction is north or west, the sections should be reversed
         public static bool ToReverseOrNotToReverse()
         {
             if (_currentDirection == Direction.North || _currentDirection == Direction.West)
@@ -332,15 +333,50 @@ namespace RaceSimulatorReRedux
         }
 
         //Replace placeholders with participants
-        public static string ShowParticipants(string input, IParticipant left, IParticipant right)
+        public static string ShowParticipants(string input, IParticipant? left, IParticipant? right)
         {
             //Take first letters from the participant's names
-            string leftParticipantIcon = left?.Name.Substring(0, 1);
-            string rightParticipantIcon = right?.Name.Substring(0, 1);
+            string? leftParticipantIcon = left?.Name.Substring(0, 1);
+            string? rightParticipantIcon = right?.Name.Substring(0, 1);
 
-            //Check for both participants if they are null, if not, replace an eventual 1 or 2 with the participant's first names
-            string output = input.Replace("1", leftParticipantIcon ?? " ").Replace("2", rightParticipantIcon ?? " ");
-            return output;
+            //Define output string 
+            string output = (string)input.Clone();
+
+            //Check if left and right are null, if they are they must be replaced by " ".
+            //If left is broken, replace with X 
+            if (left != null)
+            {
+                if (left.Equipment.IsBroken)
+                {
+                    input = input.Replace("1", "X");
+                }
+                else
+                {
+                    input = input.Replace("1", leftParticipantIcon);
+                }
+            }
+            else
+            {
+                input = input.Replace("1", " ");
+            }
+            
+            if (right != null)
+            {
+                if (right.Equipment.IsBroken)
+                {
+                    input = input.Replace("2", "X");
+                }
+                else
+                {
+                    input = input.Replace("2", rightParticipantIcon);
+                }
+            }
+            else
+            {
+                input = input.Replace("2", " ");
+            }
+
+            return input;
         }
 
         //Event handler for drivers changed event
