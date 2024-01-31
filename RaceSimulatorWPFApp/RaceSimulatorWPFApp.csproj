@@ -9,7 +9,49 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Images\" />
+    <None Remove="Images\Participants\BlueCar.png" />
+    <None Remove="Images\Participants\BrokenCars\BlueCarBroken.png" />
+    <None Remove="Images\Participants\BrokenCars\GreenCarBroken.png" />
+    <None Remove="Images\Participants\BrokenCars\GreyCarBroken.png" />
+    <None Remove="Images\Participants\BrokenCars\RedCarBroken.png" />
+    <None Remove="Images\Participants\BrokenCars\YellowCarBroken.png" />
+    <None Remove="Images\Participants\GreenCar.png" />
+    <None Remove="Images\Participants\GreyCar.png" />
+    <None Remove="Images\Participants\RedCar.png" />
+    <None Remove="Images\Participants\YellowCar.png" />
+    <None Remove="Images\TrackPieces\FinishHorizontal.png" />
+    <None Remove="Images\TrackPieces\FinishVertical.png" />
+    <None Remove="Images\TrackPieces\LeftCornerHorizontal.png" />
+    <None Remove="Images\TrackPieces\LeftCornerVertical.png" />
+    <None Remove="Images\TrackPieces\RightCornerHorizontal.png" />
+    <None Remove="Images\TrackPieces\RightCornerVertical.png" />
+    <None Remove="Images\TrackPieces\StartHorizontal.png" />
+    <None Remove="Images\TrackPieces\StartVertical.png" />
+    <None Remove="Images\TrackPieces\StraightHorizontal.png" />
+    <None Remove="Images\TrackPieces\StraightVertical.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Images\Participants\BlueCar.png" />
+    <Content Include="Images\Participants\BrokenCars\BlueCarBroken.png" />
+    <Content Include="Images\Participants\BrokenCars\GreenCarBroken.png" />
+    <Content Include="Images\Participants\BrokenCars\GreyCarBroken.png" />
+    <Content Include="Images\Participants\BrokenCars\RedCarBroken.png" />
+    <Content Include="Images\Participants\BrokenCars\YellowCarBroken.png" />
+    <Content Include="Images\Participants\GreenCar.png" />
+    <Content Include="Images\Participants\GreyCar.png" />
+    <Content Include="Images\Participants\RedCar.png" />
+    <Content Include="Images\Participants\YellowCar.png" />
+    <Content Include="Images\TrackPieces\FinishHorizontal.png" />
+    <Content Include="Images\TrackPieces\FinishVertical.png" />
+    <Content Include="Images\TrackPieces\LeftCornerHorizontal.png" />
+    <Content Include="Images\TrackPieces\LeftCornerVertical.png" />
+    <Content Include="Images\TrackPieces\RightCornerHorizontal.png" />
+    <Content Include="Images\TrackPieces\RightCornerVertical.png" />
+    <Content Include="Images\TrackPieces\StartHorizontal.png" />
+    <Content Include="Images\TrackPieces\StartVertical.png" />
+    <Content Include="Images\TrackPieces\StraightHorizontal.png" />
+    <Content Include="Images\TrackPieces\StraightVertical.png" />
   </ItemGroup>
 
 </Project>
