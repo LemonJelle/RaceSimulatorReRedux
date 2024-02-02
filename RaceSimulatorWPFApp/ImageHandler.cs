@@ -14,43 +14,43 @@ namespace RaceSimulatorWPFApp
     public static class ImageHandler
     {
         //Dictionary to match paths with bitmaps, act as cache
-        private static Dictionary<string, Bitmap> _imageCache = new();
+        private static readonly Dictionary<string, Bitmap> ImageCache = new();
 
         //Gets image from the path in a bitmap
         private static Bitmap GetBitmapImage(string path)
         {
             try
             {
-                return _imageCache[path];
+                return ImageCache[path];
             }
             catch (KeyNotFoundException)
             {
                 Bitmap image = new Bitmap(path);
-                _imageCache.Add(path, image);
-                return _imageCache[path];
+                ImageCache.Add(path, image);
+                return ImageCache[path];
             }
         }
 
         //Empty the cache
         private static void EmptyCache()
         {
-            _imageCache.Clear();
+            ImageCache.Clear();
         }
 
         //Gets a new, empty bitmap with specified width and height
-        private static Bitmap GetNewEmptyBitmap(int width, int height) 
+        public static Bitmap GetNewEmptyBitmap(int width, int height) 
         {
             string key = "empty";
             try
             {
-                return (Bitmap)_imageCache[key].Clone();
+                return (Bitmap)ImageCache[key].Clone();
             }
             catch (KeyNotFoundException)
             {
-                _imageCache.Add(key, new Bitmap(width, height));
-                Graphics graphics = Graphics.FromImage(_imageCache[key]);
+                ImageCache.Add(key, new Bitmap(width, height));
+                Graphics graphics = Graphics.FromImage(ImageCache[key]);
                 graphics.FillRectangle(new SolidBrush(System.Drawing.Color.FromArgb(97, 245, 32)), 0, 0, width, height);
-                return (Bitmap)_imageCache[key].Clone();
+                return (Bitmap)ImageCache[key].Clone();
             }
            
         }

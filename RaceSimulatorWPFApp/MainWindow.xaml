@@ -5,12 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RaceSimulatorWPFApp"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="743">
+        Title="MainWindow" Height="700" Width="1000">
     <Grid Background="#FFCAE81C">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="616*"/>
-        </Grid.ColumnDefinitions>
-        <Image Margin="0,49,240,0"/>
+        <Image x:Name="FullTrack"/>
     </Grid>
 
 </Window>
