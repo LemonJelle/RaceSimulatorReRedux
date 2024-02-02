@@ -9,7 +9,7 @@ using Model;
 
 namespace RaceSimulatorReRedux
 {
-    enum Direction
+    internal enum Direction
     {
         North,
         South,
@@ -137,7 +137,7 @@ namespace RaceSimulatorReRedux
             foreach (Section section in track.Sections)
             {
                 _currentSection = section;  //update section
-                DrawSection(DecideSectionToDraw(section), _currentSection);
+                DrawSection(DecideSectionToDraw(section));
                 if(section.SectionType == SectionTypes.LeftCorner || section.SectionType == SectionTypes.RightCorner)
                 {
                     ChangeDirection(section.SectionType);
@@ -207,7 +207,7 @@ namespace RaceSimulatorReRedux
         }
 
         //Draw the section with the given string array, reverse if necessary and add participants
-        public static void DrawSection(string[] sectionLinesToDraw, Section currentSection)
+        public static void DrawSection(string[] sectionLinesToDraw)
         {
             //Temporary cursors
             int tempX = _cursorX;
@@ -322,14 +322,7 @@ namespace RaceSimulatorReRedux
         //If the direction is north or west, the sections should be reversed
         public static bool ToReverseOrNotToReverse()
         {
-            if (_currentDirection == Direction.North || _currentDirection == Direction.West)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return _currentDirection == Direction.North || _currentDirection == Direction.West;
         }
 
         //Replace placeholders with participants

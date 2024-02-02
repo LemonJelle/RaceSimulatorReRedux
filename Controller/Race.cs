@@ -148,60 +148,53 @@ namespace Controller
             //Right participant
             //check if current section data is null, this shouldn't be the case if the participant is in it
             //if it is occupied, add distance
-            if (currentSectionData.Right != null)
+            if (currentSectionData.Right == null) return;
+            if (currentSectionData.Right.Equipment.IsBroken) return;
+            currentSectionData.DistanceRight += CalculateRealSpeed(currentSectionData.Right.Equipment.Performance, currentSectionData.Right.Equipment.Speed);
+
+            //If distance exceeds 100, check if next section right is null, else move to left
+            if (currentSectionData.DistanceRight < _sectionLength) return;
+            if (nextSectionData.Right == null)
             {
-                if (!currentSectionData.Right.Equipment.IsBroken)
+                //Transfer participant to next section
+                nextSectionData.Right = currentSectionData.Right;
+
+                //Check if the participant is on the finish
+                if (IsParticipantOnFinish(nextSection))
                 {
-                    currentSectionData.DistanceRight += CalculateRealSpeed(currentSectionData.Right.Equipment.Performance, currentSectionData.Right.Equipment.Speed);
-
-                    //If distance exceeds 100, check if next section right is null, else move to left
-                    if (currentSectionData.DistanceRight >= _sectionLength)
-                    {
-                        if (nextSectionData.Right == null)
-                        {
-                            //Transfer participant to next section
-                            nextSectionData.Right = currentSectionData.Right;
-
-                            //Check if the participant is on the finish
-                            if (IsParticipantOnFinish(nextSection))
-                            {
-                                LapOrFinish(nextSectionData, nextSectionData.Right);
-                            }
-
-
-                            //Set current section data to null
-                            currentSectionData.Right = null;
-
-                            //Set distance back to zero
-                            currentSectionData.DistanceRight = 0;
-
-                        }
-                        else if (nextSectionData.Left == null)
-                        {
-                            //Transfer participant to next section but on the right
-                            nextSectionData.Left = currentSectionData.Right;
-
-                            //Check if the participant is on the finish
-                            if (IsParticipantOnFinish(nextSection))
-                            {
-                                LapOrFinish(nextSectionData, nextSectionData.Left);
-                            }
-
-
-                            //Set current section data to null
-                            currentSectionData.Right = null;
-
-                            //Set distance back to zero
-                            currentSectionData.DistanceRight = 0;
-                        }
-                        else
-                        {
-                            //Participant can't advance, set distanceright to 195 so they're at the end
-                            currentSectionData.DistanceRight = _sectionLength - 5;
-                        }
-                    }
+                    LapOrFinish(nextSectionData, nextSectionData.Right);
                 }
-                
+
+
+                //Set current section data to null
+                currentSectionData.Right = null;
+
+                //Set distance back to zero
+                currentSectionData.DistanceRight = 0;
+
+            }
+            else if (nextSectionData.Left == null)
+            {
+                //Transfer participant to next section but on the right
+                nextSectionData.Left = currentSectionData.Right;
+
+                //Check if the participant is on the finish
+                if (IsParticipantOnFinish(nextSection))
+                {
+                    LapOrFinish(nextSectionData, nextSectionData.Left);
+                }
+
+
+                //Set current section data to null
+                currentSectionData.Right = null;
+
+                //Set distance back to zero
+                currentSectionData.DistanceRight = 0;
+            }
+            else
+            {
+                //Participant can't advance, set distanceright to 195 so they're at the end
+                currentSectionData.DistanceRight = _sectionLength - 5;
             }
         }
 
