@@ -17,7 +17,7 @@ namespace RaceSimulatorWPFApp
         private static readonly Dictionary<string, Bitmap> ImageCache = new();
 
         //Gets image from the path in a bitmap
-        private static Bitmap GetBitmapImage(string path)
+        public static Bitmap GetBitmapImage(string path)
         {
             try
             {
