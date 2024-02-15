@@ -19,15 +19,15 @@ namespace RaceSimulatorWPFApp
         //Gets image from the path in a bitmap
         public static Bitmap GetBitmapImage(string path)
         {
-            try
+            if (ImageCache.TryGetValue(path, out Bitmap? value))
             {
-                return ImageCache[path];
+                return value;
             }
-            catch (KeyNotFoundException)
+            else
             {
                 Bitmap image = new Bitmap(path);
                 ImageCache.Add(path, image);
-                return ImageCache[path];
+                return (Bitmap)image.Clone();
             }
         }
 

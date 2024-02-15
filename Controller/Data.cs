@@ -63,6 +63,24 @@ namespace Controller
         //Add tracks. Tracks always start on the top. 
         public static void AddTracks()
         {
+            //Simple circle track
+            Competition.Tracks.Enqueue(new Track("Indianapolis Motor Speedway", new[]
+            {
+                SectionTypes.StartGrid,
+                SectionTypes.StartGrid,
+                SectionTypes.StartGrid,
+                SectionTypes.Finish,
+                SectionTypes.RightCorner,
+                SectionTypes.Straight,
+                SectionTypes.RightCorner,
+                SectionTypes.Straight,
+                SectionTypes.Straight,
+                SectionTypes.Straight,
+                SectionTypes.Straight,
+                SectionTypes.RightCorner,
+                SectionTypes.Straight,
+                SectionTypes.RightCorner
+            }));
 
             //Very complicated track
             Competition.Tracks.Enqueue(new Track("Spa", new[]
@@ -105,24 +123,7 @@ namespace Controller
                 SectionTypes.Straight,
 
             }));
-            //Simple circle track
-            Competition.Tracks.Enqueue(new Track("Indianapolis Motor Speedway", new[]
-            {
-                SectionTypes.StartGrid,
-                SectionTypes.StartGrid,
-                SectionTypes.StartGrid,
-                SectionTypes.Finish,
-                SectionTypes.RightCorner,
-                SectionTypes.Straight,
-                SectionTypes.RightCorner,
-                SectionTypes.Straight,
-                SectionTypes.Straight,
-                SectionTypes.Straight,
-                SectionTypes.Straight,
-                SectionTypes.RightCorner,
-                SectionTypes.Straight,
-                SectionTypes.RightCorner
-            }));
+            
            
         }
 

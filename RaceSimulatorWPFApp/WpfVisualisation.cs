@@ -65,10 +65,10 @@ namespace RaceSimulatorWPFApp
         {
             Initalise();
 
-            _cursorX = 0;
-            _cursorY = 256;
+            _cursorX = 384;
+            _cursorY = 192;
 
-            _trackBitmap = ImageHandler.GetNewEmptyBitmap(1000, 700);   //Track dimensions are static for now
+            _trackBitmap = ImageHandler.GetNewEmptyBitmap(3000, 2100);   //Track dimensions are static for now
             _trackGraphics = Graphics.FromImage(_trackBitmap);
             
             //Loop through sections
@@ -91,9 +91,13 @@ namespace RaceSimulatorWPFApp
             if (reverse)
             {
                 //reverse the bitmap
+                bitmapToDraw = ReverseSectionBitmap(bitmapToDraw);
             }
 
-            _trackGraphics.DrawImage(bitmapToDraw);
+            _trackGraphics.DrawImage(bitmapToDraw, _cursorX, _cursorY);
+
+            //Reverse again if the new direction is north or west
+
 
 
         }
@@ -205,9 +209,25 @@ namespace RaceSimulatorWPFApp
             }
         }
 
+        //Standard section width and height is 192
         public static void ChangeCursorPosition()
         {
+            switch (_currentDirection)
+            {
+                case Direction.North:
+                    _cursorY -= 192;
+                    break;
+                case Direction.East:
+                    _cursorX += 192;
+                    break;
+                case Direction.South:
+                    _cursorY += 192;
+                    break;
+                case Direction.West:
+                    _cursorX -= 192;
+                    break;
 
+            }
         }
 
         public static Bitmap GetSectionBitmap(string path)
@@ -215,9 +235,11 @@ namespace RaceSimulatorWPFApp
             return new Bitmap(ImageHandler.GetBitmapImage(path));
         }
 
-
-
-
-
+        public static Bitmap ReverseSectionBitmap(Bitmap bitmap)
+        {
+            Bitmap reversedBitmap = new Bitmap(bitmap);
+            reversedBitmap.RotateFlip(RotateFlipType.RotateNoneFlipXY);
+            return reversedBitmap;
+        }
     }
 }

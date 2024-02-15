@@ -42,16 +42,36 @@
     <Content Include="Images\Participants\GreyCar.png" />
     <Content Include="Images\Participants\RedCar.png" />
     <Content Include="Images\Participants\YellowCar.png" />
-    <Content Include="Images\TrackPieces\FinishHorizontal.png" />
-    <Content Include="Images\TrackPieces\FinishVertical.png" />
-    <Content Include="Images\TrackPieces\LeftCornerHorizontal.png" />
-    <Content Include="Images\TrackPieces\LeftCornerVertical.png" />
-    <Content Include="Images\TrackPieces\RightCornerHorizontal.png" />
-    <Content Include="Images\TrackPieces\RightCornerVertical.png" />
-    <Content Include="Images\TrackPieces\StartHorizontal.png" />
-    <Content Include="Images\TrackPieces\StartVertical.png" />
-    <Content Include="Images\TrackPieces\StraightHorizontal.png" />
-    <Content Include="Images\TrackPieces\StraightVertical.png" />
+    <Content Include="Images\TrackPieces\FinishHorizontal.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\TrackPieces\FinishVertical.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\TrackPieces\LeftCornerHorizontal.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\TrackPieces\LeftCornerVertical.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\TrackPieces\RightCornerHorizontal.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\TrackPieces\RightCornerVertical.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\TrackPieces\StartHorizontal.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\TrackPieces\StartVertical.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\TrackPieces\StraightHorizontal.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\TrackPieces\StraightVertical.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
