@@ -241,5 +241,13 @@ namespace RaceSimulatorWPFApp
             reversedBitmap.RotateFlip(RotateFlipType.RotateNoneFlipXY);
             return reversedBitmap;
         }
+
+        public static Bitmap ShowParticipantsOnBitmap(Bitmap input, SectionTypes type, IParticipant left, IParticipant right)
+        {
+            Bitmap newBitmap = (Bitmap)input.Clone();
+            Graphics graphics = Graphics.FromImage(newBitmap);
+        }
+
+        public static bool IsBroken
     }
 }
