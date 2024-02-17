@@ -44,7 +44,21 @@ namespace RaceSimulatorWPFApp
         private const string _leftCornerVertical = @".\Images\TrackPieces\LeftCornerVertical.png";
         private const string _rightCornerHorizontal = @".\Images\TrackPieces\RightCornerHorizontal.png";
         private const string _rightCornerVertical = @".\Images\TrackPieces\RightCornerVertical.png";
-        
+
+        //Normal participants
+        private const string _blueCar = @".\Images\Participants\BlueCar.png";
+        private const string _greenCar = @".\Images\Participants\GreenCar.png";
+        private const string _greyCar = @".\Images\Participants\GreyCar.png";
+        private const string _redCar = @".\Images\Participants\RedCar.png";
+        private const string _yellowCar = @".\Images\Participants\YellowCar.png";
+
+        //Broken participants
+        private const string _blueCarBroken = @".\Images\Participants\BrokenCars\BlueCarBroken.png";
+        private const string _greenCarBroken = @".\Images\Participants\BrokenCars\GreenCarBroken.png";
+        private const string _greyCarBroken = @".\Images\Participants\BrokenCars\GreyCarBroken.png";
+        private const string _redCarBroken = @".\Images\Participants\BrokenCars\RedCarBroken.png";
+        private const string _yellowCarBroken = @".\Images\Participants\BrokenCars\YellowCarBroken.png";
+
 
         #endregion
 
@@ -244,10 +258,99 @@ namespace RaceSimulatorWPFApp
 
         public static Bitmap ShowParticipantsOnBitmap(Bitmap input, SectionTypes type, IParticipant left, IParticipant right)
         {
+            string pathLeft;
+            string pathRight;
             Bitmap newBitmap = (Bitmap)input.Clone();
-            Graphics graphics = Graphics.FromImage(newBitmap);
+            Graphics participantGraphics = Graphics.FromImage(newBitmap);
+
+            //left
+            if (left != null)
+            {
+
+                Bitmap leftBitmap = new Bitmap(ImageHandler.GetBitmapImage(GetPath(left)));
+                switch (type)
+                {
+                    case SectionTypes.Straight:
+                        if (_currentDirection == Direction.North)
+                        {
+                            //rotate bitmap so it faces the right direction
+                        }
+                }
+                
+            }
+
+            return null;
         }
 
-        public static bool IsBroken
+        //checks if participant is broken, if so, return the broken path, if not, return the normal path
+        public static bool IsBroken(IParticipant participant)
+        {
+            return participant.Equipment.IsBroken;
+        }
+
+        public static string GetPath(IParticipant participant)
+        {
+            if (participant.TeamColor == TeamColors.Blue)
+            {
+                if (IsBroken(participant))
+                {
+                    return _blueCarBroken;
+                }
+                else
+                {
+                    return _blueCar;
+                }
+            }
+            else if (participant.TeamColor == TeamColors.Green)
+            {
+                if (IsBroken(participant))
+                {
+                    return _greenCarBroken;
+                }
+                else
+                {
+                    return _greenCar;
+                }
+            }
+            else if (participant.TeamColor == TeamColors.Grey)
+            {
+                if (IsBroken(participant))
+                {
+                    return _greyCarBroken;
+                }
+                else
+                {
+                    return _greyCar;
+                }
+            }
+            else if (participant.TeamColor == TeamColors.Red)
+            {
+                if (IsBroken(participant))
+                {
+                    return _redCarBroken;
+                }
+                else
+                {
+                    return _redCar;
+                }
+            }
+            else if (participant.TeamColor == TeamColors.Yellow)
+            {
+                if (IsBroken(participant))
+                {
+                    return _yellowCarBroken;
+                }
+                else
+                {
+                    return _yellowCar;
+                }
+            }
+            else
+            {
+                return null;
+            }
+
+            
+        }
     }
 }
