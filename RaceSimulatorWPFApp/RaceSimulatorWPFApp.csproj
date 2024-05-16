@@ -9,16 +9,24 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Images\Participants\BlueCar.png" />
-    <None Remove="Images\Participants\BrokenCars\BlueCarBroken.png" />
-    <None Remove="Images\Participants\BrokenCars\GreenCarBroken.png" />
-    <None Remove="Images\Participants\BrokenCars\GreyCarBroken.png" />
-    <None Remove="Images\Participants\BrokenCars\RedCarBroken.png" />
-    <None Remove="Images\Participants\BrokenCars\YellowCarBroken.png" />
-    <None Remove="Images\Participants\GreenCar.png" />
-    <None Remove="Images\Participants\GreyCar.png" />
-    <None Remove="Images\Participants\RedCar.png" />
-    <None Remove="Images\Participants\YellowCar.png" />
+    <Compile Remove="Images\Participants\**" />
+    <EmbeddedResource Remove="Images\Participants\**" />
+    <None Remove="Images\Participants\**" />
+    <Page Remove="Images\Participants\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Images\Cars\BlueCar.png" />
+    <None Remove="Images\Cars\BrokenCars\BlueCarBroken.png" />
+    <None Remove="Images\Cars\BrokenCars\GreenCarBroken.png" />
+    <None Remove="Images\Cars\BrokenCars\GreyCarBroken.png" />
+    <None Remove="Images\Cars\BrokenCars\RedCarBroken.png" />
+    <None Remove="Images\Cars\BrokenCars\YellowCarBroken.png" />
+    <None Remove="Images\Cars\GreenCar.png" />
+    <None Remove="Images\Cars\GreyCar.png" />
+    <None Remove="Images\Cars\RedCar.png" />
+    <None Remove="Images\Cars\RedCar2.png" />
+    <None Remove="Images\Cars\YellowCar.png" />
     <None Remove="Images\TrackPieces\FinishHorizontal.png" />
     <None Remove="Images\TrackPieces\FinishVertical.png" />
     <None Remove="Images\TrackPieces\LeftCornerHorizontal.png" />
@@ -32,16 +40,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Images\Participants\BlueCar.png" />
-    <Content Include="Images\Participants\BrokenCars\BlueCarBroken.png" />
-    <Content Include="Images\Participants\BrokenCars\GreenCarBroken.png" />
-    <Content Include="Images\Participants\BrokenCars\GreyCarBroken.png" />
-    <Content Include="Images\Participants\BrokenCars\RedCarBroken.png" />
-    <Content Include="Images\Participants\BrokenCars\YellowCarBroken.png" />
-    <Content Include="Images\Participants\GreenCar.png" />
-    <Content Include="Images\Participants\GreyCar.png" />
-    <Content Include="Images\Participants\RedCar.png" />
-    <Content Include="Images\Participants\YellowCar.png" />
+    <Content Include="Images\Cars\BlueCar.png" />
+    <Content Include="Images\Cars\BrokenCars\BlueCarBroken.png" />
+    <Content Include="Images\Cars\BrokenCars\GreenCarBroken.png" />
+    <Content Include="Images\Cars\BrokenCars\GreyCarBroken.png" />
+    <Content Include="Images\Cars\BrokenCars\RedCarBroken.png" />
+    <Content Include="Images\Cars\BrokenCars\YellowCarBroken.png" />
+    <Content Include="Images\Cars\GreenCar.png" />
+    <Content Include="Images\Cars\GreyCar.png" />
+    <Content Include="Images\Cars\RedCar.png" />
+    <Content Include="Images\Cars\YellowCar.png" />
     <Content Include="Images\TrackPieces\FinishHorizontal.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
